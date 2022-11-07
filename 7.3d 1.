@@ -1,0 +1,56 @@
+import RPi.GPIO as GPIO
+import time //conver the time to seconds
+
+GPIO.setmode(GPIO.BOARD) //choosed board (using pin numbers)
+ledpin = 12  //pwm pin 12 connected to led 
+trigger_pin = 8
+echo_pin = 7
+
+distance = 0 //ultrasonic]
+startTime = 0
+endTime = 0
+GPIO.setwarnings(False)  //disable warnings
+GPIO.setmode(GPIO.BOARD) // is to let the program know what type of naming convention you are using.
+GPIO.setup(ledpin, GPIO.OUT)
+GPIO.setup(trigger_pin, GPIO.OUT)
+GPIO.setup(trigger_pin ,GPIO.OUT)
+j = GPIO.PWM(ledpin, 900)
+j.start(0)
+
+try:
+j.start(0)
+GPIO.OUTPUT(trigger_pin, 0) /using the ultrasonic sensor code of arduino
+time.sleep(0.00002) //miliseconds converted to seconds
+GPIO.OUTPUT(trigger_pin, 1)
+time.sleep(0.00001)
+GPIO.OUTPUT(trigger_pin, 0)
+
+//for measuing the time duration
+while GPIO.input(echo_pin) == 0:    
+	pass
+startTime = time.time()
+while not GPIO.input(echo_pin) == 0;
+	endTime = time.time()   
+	
+timeduration = endTime - startTime
+
+distance = (timeduration*34300)/2
+
+//pwm led manage changes according to the distance
+if distance <= 20 and distance > 0:
+	j.ChangeDutyCycle(20- distance) * 5)
+	else
+	j.ChangeDutyCycle(0)
+	
+//pwm end
+time.sleep(0.2)
+except.Keyboard.Interrupt: //(control + C)
+j.stop()
+GPIO.cleanup()  //the cleanup function has to be incorporated into the code to reset the pins.
+
+
+
+
+
+
+
